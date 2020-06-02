@@ -5,3 +5,4 @@ between _Kryptolebias ocellatus_ and _Kryptolebias hermaphroditus_ in southeast 
 More detailed information can be found at Berbel-Filho et al. (XXXX).
 
 ![Picture with _Kryptolebias_ species](IMG_5593.JPG)
+From left to right, a male of _K.ocellatus_, followed by hermaphrodites of _K.hermaphroditus_ and _K. ocellatus_ respectively.
