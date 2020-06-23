@@ -24,7 +24,7 @@ A general sequencing quality check of each plate was performed using the softwar
 ```
 ### 3) Demultiplexing GBS reads
 
-The software **GBSX--v1.3** was used to demultiplex the data based on the barcode **(KFP_Barcodes.info)** info in the respective key files. We allowed for one mismatch in the barcode sequences using the parameter```-mb 1```
+The software **GBSX--v1.3** was used to demultiplex the data based on the barcode **(KFP_Barcodes.info)** info in the respective key files. We allowed for one mismatch in the barcode sequences using the parameter`-mb 1`
 ```
 java -jar ~/Desktop/msGBS_data/Tools/GBSX-master/releases/GBSX_v1.3/GBSX_v1.3.jar --Demultiplexer -t 8 -f1 ~/Desktop/msGBS_data/George/GBS_Data/S0_R1_001.fastq.gz -f2 ~/Desktop/msGBS_data/George/GBS_Data/S0_R2_001.fastq.gz -i ~/Desktop/msGBS_data/George/GBS_Data/KFP_Barcodes.info -mb 1 -me 0 -ca false -gzip true -o ~/Desktop/msGBS_data/George/GBS_Data/KFP-Demultiplexed_GBSX--v1.3/
 ```
