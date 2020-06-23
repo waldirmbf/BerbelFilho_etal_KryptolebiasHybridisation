@@ -191,6 +191,6 @@ awk 'BEGIN{OFS="\t"} NR==FNR{x[$1]=$2} NR!=FNR && $2>1000{if(!x[$1])x[$1]=0; pri
 ```
 awk '{if ($3!=0) print;}' ~/Desktop/msGBS_data/George/KFP-ANGSDRuns/KFP--GoodSamplesReads_NoES1_Kher_SITES--Article--Ultra.ScaffoldInfo.txt > ~/Desktop/msGBS_data/George/KFP-ANGSDRuns/KFP--GoodSamplesReads_NoES1_Kher_SITES--Article--Ultra.ScaffoldInfo_OnlyWithSites.txt
 ```
-Finally to correlate sites density and scaffold lenght, we used this ***[R script] ()****, and following is the plot:
+Finally to correlate sites density and scaffold lenght, we used this [**R script**](KFP--ToPlot_ScaffoldLength-NumberOfSites.R), and following is the plot:
 
-![Scattter plot with number of sites and scaffold lenght](SitesvsScaffoldLenght.jpeg)
+![Scattter plot with number of sites and scaffold lenght](SitesvsScaffoldLenght.jpg)
