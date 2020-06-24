@@ -183,11 +183,11 @@ For sites density per scaffold, we used the following scripts:
 ```
 zcat ~/Desktop/msGBS_data/George/KFP-ANGSDRuns/KFP--GoodSamplesReads_NoES1_Kher_SITES--Article--Ultra.mafs.gz | tail -n +2 | cut -f1 | sort | uniq -c | awk '{print $2"\t"$1}' | sort -n -k 2,2 > ~/Desktop/msGBS_data/George/KFP-ANGSDRuns/KFP--GoodSamplesReads_NoES1_Kher_SITES--Article--Ultra.SITESDensity.txt
 ```
-Number of sites per scaffold which had at least one site is contained in this [file](KFP--GoodSamplesReads_NoES1_Kher_SITES--Article--Ultra.SITESDensity). Now, we extracted how long each scaffold is in the genome reference using:
+Number of sites per scaffold which had at least one site is contained in this [file](KFP--GoodSamplesReads_NoES1_Kher_SITES--Article--Ultra.SITESDensity). Now, we extracted scaffold lenght and number of sites per scaffold as:
 ```
 awk 'BEGIN{OFS="\t"} NR==FNR{x[$1]=$2} NR!=FNR && $2>1000{if(!x[$1])x[$1]=0; print $1,$2,x[$1]}' ~/Desktop/msGBS_data/George/KFP-ANGSDRuns/KFP--GoodSamplesReads_NoES1_Kher_SITES--Article--Ultra.SITESDensity.txt ~/Desktop/msGBS_data/George/Genome/GCF_001649575.1_ASM164957v1_genomic.Edited.fasta.fai | sort -n -k 2,2 > ~/Desktop/msGBS_data/George/KFP-ANGSDRuns/KFP--GoodSamplesReads_NoES1_Kher_SITES--Article--Ultra.ScaffoldInfo.txt
 ```
- Number of base pairs in each scaffold in the reference genome is contained in this [file](KFP--GoodSamplesReads_NoES1_Kher_SITES--Article--Ultra.ScaffoldInfo). We generated a new file now containing lenght information for the scaffolds containting at least one site as follows:
+ Scaffold lenght and number of sites per scaffold is contained in this [file](KFP--GoodSamplesReads_NoES1_Kher_SITES--Article--Ultra.ScaffoldInfo). We generated a file containing lenght information only for the scaffolds containting at least one site. As follows:
 ```
 awk '{if ($3!=0) print;}' ~/Desktop/msGBS_data/George/KFP-ANGSDRuns/KFP--GoodSamplesReads_NoES1_Kher_SITES--Article--Ultra.ScaffoldInfo.txt > ~/Desktop/msGBS_data/George/KFP-ANGSDRuns/KFP--GoodSamplesReads_NoES1_Kher_SITES--Article--Ultra.ScaffoldInfo_OnlyWithSites.txt
 ```
