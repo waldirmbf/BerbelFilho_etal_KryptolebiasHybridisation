@@ -14,7 +14,7 @@ __________________________________________
 
 ### 1) Filtering samples according to threshold of reads
 
-A [file containing a list of samples](KFP--GoodSamplesReads.list)  with number of reads above the threshold (>500k reads) was created was created as follows:
+A [file containing a list of samples](KFP--GoodSamplesReads.list.txt)  with number of reads above the threshold (>500k reads) was created was created as follows:
 
 ```
 tail -n +2 ~/Desktop/msGBS_data/George/GBS_Data/KFP-Demultiplexed_GBSX--v1.3/gbsDemultiplex.stats | awk '$4>500000' | cut -f1 > ~/Desktop/msGBS_data/George/KFP-Mapped/KFP--GoodSamplesReads.list
