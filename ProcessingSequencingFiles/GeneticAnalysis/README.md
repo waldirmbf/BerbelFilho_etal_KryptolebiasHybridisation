@@ -28,7 +28,7 @@ To make a list of BAM files containing only populations of _K. ocellatus_ and _K
 find ~/Desktop/msGBS_data/George/KFP-Mapped/SortedIndexed/*.bam | grep -f ~/Desktop/msGBS_data/George/KFP-Mapped/KFP--GoodSamplesReads.list | grep -f ~/Desktop/msGBS_data/George/KFP-Mapped/KFP--GoodSamplesReadsNoKbraKgra.list | fgrep -v -f ~/Desktop/msGBS_data/George/KFP-Mapped/KFP--GoodSamples_OnlyES1_Kher.list > ~/Desktop/msGBS_data/George/KFP-Mapped/KFP--GoodSamplesReads_NoES1_Kher.BAMlist
 ```
 The FastQC files inclued in this project can be acessed at
-[NCBI acession PRJNA563625](https://www.ncbi.nlm.nih.gov/bioproject/PRJNA563625)
+[NCBI acession PRJNA563625](https://www.ncbi.nlm.nih.gov/bioproject/PRJNA563625).
 
 ### 3)  Number of sites covered in the dataset (Dataset  I)
 The software **ANGSD v. 0.92** was used to calculate the total number of reads in the dataset under the following parameters.
@@ -42,7 +42,7 @@ The software **ANGSD v. 0.92** was used to calculate the total number of reads i
 
 `-baq 1`= Adjust qscores around indels (1=normal baq 2= extended(as SAMtools)).
 
-`-C 50` = Adjust mapQ for excessive mismatches (as SAMtools)
+`-C 50` = Adjust mapQ for excessive mismatches (as SAMtools).
 
 `-minMapQ 30` = Discard reads with mapping quality below 30.
 
@@ -88,7 +88,7 @@ The following script was used to calculate the average depth of reads across all
 ```
 zcat ~/Desktop/msGBS_data/George/KFP-ANGSDRuns/KFP--GoodSamplesReads_NoES1_Kher_SITES--Article--Ultra.counts.gz | tail -n +2 | gawk ' {for (i=1;i<=NF;i++){a[i]+=$i;++count[i]}} END{ for(i=1;i<=NF;i++){print a[i]/count[i]}}' | paste ~/Desktop/msGBS_data/George/KFP-Mapped/KFP--GoodSamplesReads_NoES1_Kher.labels - > ~/Desktop/msGBS_data/George/KFP-Analyses/KFP-Miscellaneous/KFP-RealCoverage/KFP--GoodSamplesReads_NoES1_Kher_SITES--Article--Ultra.GL-RealCoverage.txt
 ```
-The results can be found in this [file](KFP--GoodSamplesReads_NoES1_Kher_SITES--Article--Ultra.GL-RealCoverage).
+The results can be found in this [file](KFP--GoodSamplesReads_NoES1_Kher_SITES--Article--Ultra.GL-RealCoverage.txt).
 
 #### 3.2)  Average percentage of missing data per sample in Dataset I
 The following script was used to the average percentage of missing data across all sites per individual in the dataset I.
@@ -168,9 +168,9 @@ The following script was used to the average percentage of missing data across a
 zcat ~/Desktop/msGBS_data/George/KFP-ANGSDRuns/KFP--GoodSamplesReads_NoES1_Kher--Article--Ultra.beagle.gz | tail -n +2 | perl ~/Desktop/msGBS_data/Tools/Scripts/call_geno.pl --skip 3 | cut -f 4- | awk '{ for(i=1;i<=NF; i++){ if($i==-1)x[i]++} } END{ for(i=1;i<=NF; i++) print i"\t"x[i] }' | paste ~/Desktop/msGBS_data/George/KFP-Mapped/KFP--GoodSamplesReads_NoES1_Kher.labels - | awk '{print $1"\t"$3"\t"$3*100/5477}' > ~/Desktop/msGBS_data/George/KFP-Analyses/KFP-Miscellaneous/KFP-MissingData/KFP--GoodSamplesReads_NoES1_Kher--Article--Ultra.GL-MissingData.txt
 ```
 
-The results can be found in this [file](KFP--GoodSamplesReads_NoES1_Kher--Article--Ultra.GL-MissingData.txt).
+The results can be found in this [file](KFP--GoodSamplesReads_NoES1_Kher--Article--Ultra.GL-MissingData.txt.txt).
 
-### 5) Genomic analysis with dataset I
+### 5) Genomic analysis with Dataset I (597.333 sites)
 #### 5.1) Sites distribution
 To have an ideia of the sites density across the reference genome in our dataset, the number of scaffolds with at least one site was reriteved as follows:
 ```
@@ -183,14 +183,169 @@ For sites density per scaffold, we used the following scripts:
 ```
 zcat ~/Desktop/msGBS_data/George/KFP-ANGSDRuns/KFP--GoodSamplesReads_NoES1_Kher_SITES--Article--Ultra.mafs.gz | tail -n +2 | cut -f1 | sort | uniq -c | awk '{print $2"\t"$1}' | sort -n -k 2,2 > ~/Desktop/msGBS_data/George/KFP-ANGSDRuns/KFP--GoodSamplesReads_NoES1_Kher_SITES--Article--Ultra.SITESDensity.txt
 ```
-Number of sites per scaffold which had at least one site is contained in this [file](KFP--GoodSamplesReads_NoES1_Kher_SITES--Article--Ultra.SITESDensity). Now, we extracted scaffold lenght and number of sites per scaffold as:
+Number of sites per scaffold which had at least one site is contained in this [file](KFP--GoodSamplesReads_NoES1_Kher_SITES--Article--Ultra.SITESDensity.txt). Now, we extracted scaffold lenght and number of sites per scaffold as:
 ```
 awk 'BEGIN{OFS="\t"} NR==FNR{x[$1]=$2} NR!=FNR && $2>1000{if(!x[$1])x[$1]=0; print $1,$2,x[$1]}' ~/Desktop/msGBS_data/George/KFP-ANGSDRuns/KFP--GoodSamplesReads_NoES1_Kher_SITES--Article--Ultra.SITESDensity.txt ~/Desktop/msGBS_data/George/Genome/GCF_001649575.1_ASM164957v1_genomic.Edited.fasta.fai | sort -n -k 2,2 > ~/Desktop/msGBS_data/George/KFP-ANGSDRuns/KFP--GoodSamplesReads_NoES1_Kher_SITES--Article--Ultra.ScaffoldInfo.txt
 ```
- Scaffold lenght and number of sites per scaffold is contained in this [file](KFP--GoodSamplesReads_NoES1_Kher_SITES--Article--Ultra.ScaffoldInfo). We generated a file containing lenght information only for the scaffolds containting at least one site. As follows:
+ Scaffold lenght and number of sites per scaffold is contained in this [file](KFP--GoodSamplesReads_NoES1_Kher_SITES--Article--Ultra.ScaffoldInfo.txt). We generated a file containing lenght information only for the scaffolds containting at least one site. As follows:
 ```
 awk '{if ($3!=0) print;}' ~/Desktop/msGBS_data/George/KFP-ANGSDRuns/KFP--GoodSamplesReads_NoES1_Kher_SITES--Article--Ultra.ScaffoldInfo.txt > ~/Desktop/msGBS_data/George/KFP-ANGSDRuns/KFP--GoodSamplesReads_NoES1_Kher_SITES--Article--Ultra.ScaffoldInfo_OnlyWithSites.txt
 ```
 Finally to correlate sites density and scaffold lenght, we used this [**R script**](KFP--ToPlot_ScaffoldLength-NumberOfSites.R), and following is the plot:
 
 ![Scattter plot with number of sites and scaffold lenght](SitesvsScaffoldLenght.jpg)
+
+#### 5.2) Proportion of heterozygous sites
+To calculate the proportion of heterozygous sites in dataset I, we  first needed to filter the sites (though a '.bed' file) selected according to the parameters used in the **step 3**  based on the '.mafs' file from this run. As follows:
+```
+zcat ~/Desktop/msGBS_data/George/KFP-ANGSDRuns/KFP--GoodSamplesReads_NoES1_Kher_SITES--Article--Ultra.mafs.gz | cut -f1,2 | tail -n +2 | awk '{print $1"\t"$2-1"\t"$2}' | bedtools merge -i - > ~/Desktop/msGBS_data/George/KFP-Analyses/KFP-Heterozygosity/KFP--GoodSamplesReads_NoES1_Kher_SITES--Article--Ultra.bed
+```
+The '.bed' file created is available [here](KFP--GoodSamplesReads_NoES1_Kher_SITES--Article--Ultra.bed). This '.bed' needs to be indexed. We used **ANGSD v. 0.92** as follows:
+```
+awk '{print $1"\t"($2+1)"\t"$3}' ~/Desktop/msGBS_data/George/KFP-Analyses/KFP-Heterozygosity/KFP--GoodSamplesReads_NoES1_Kher_SITES--Article--Ultra.bed > ~/Desktop/msGBS_data/George/KFP-Analyses/KFP-Heterozygosity/KFP--GoodSamplesReads_NoES1_Kher_SITES--Article--Ultra.pos
+~/Desktop/msGBS_data/Tools/ngsTools/angsd/angsd sites index ~/Desktop/msGBS_data/George/KFP-Analyses/KFP-Heterozygosity/KFP--GoodSamplesReads_NoES1_Kher_SITES--Article--Ultra.pos
+```
+To calculate the proportion of heterozygous sites, **ANGSD v. 0.92** requires a
+'ancestral' file, a  fasta file from a outgroup individual. We used a '.bam' file
+from a _K.brasiliensis_, a freshwater _Kryptolebias_ species from Southeast Brazil. We generated the ancestral sequence as follows:
+```
+~/Desktop/msGBS_data/Tools/ngsTools/angsd/angsd -nThreads 2 -i ~/Desktop/msGBS_data/George/KFP-Mapped/SortedIndexed/RJ3_05_Kbra.bam -ref ~/Desktop/msGBS_data/George/Genome/GCF_001649575.1_ASM164957v1_genomic.Edited.fasta -doFasta 1 -doCounts 1 -explode 1 -rmTrans 0 -seed 543 -remove_bads 1 -uniqueOnly 1 -baq 1 -C 50 -minMapQ 30 -minQ 20 -out ~/Desktop/msGBS_data/George/KFP-ANGSDRuns/RJ3_05_Kbra--Ancestral
+```
+`-nThreads 2` = Two threads to be used while running.
+
+`-i` =  Path to input bam file.
+
+`-ref`= Path to reference genome.
+
+`-doFasta 1` = Sample a random base at each position. N's or filtered based are ignored.
+
+`-doCounts 1` = Determine the most common base.
+
+`-explode 1` = Only output chromossomes with data.
+
+`-rmTrans 0` = Remove transitions.
+
+`-seed 543` = Random seed number.
+
+`-remove_bads 1` = Discard 'bad' reads, (flag>=256).
+
+`-uniqueOnly 1` = Discard reads that doesn't map uniquely.
+
+`-baq 1`= Adjust qscores around indels (1=normal baq 2= extended(as SAMtools)).
+
+`-C 50` = Adjust mapQ for excessive mismatches (as SAMtools).
+
+`-minMapQ 30` = Discard reads with mapping quality below 30.
+
+`-minQ 20` = Discard bases with base quality below 20.
+
+To index the 'ancestral sequence', we used **samtools** as follows:
+```
+samtools faidx ~/Desktop/msGBS_data/George/KFP-ANGSDRuns/RJ3_05_Kbra--Ancestral.fa
+```
+
+To generate the heterozygosity file for each individual, we used **ANGSD v. 0.92** as follows:
+```
+parallel --plus ~/Desktop/msGBS_data/Tools/ngsTools/angsd/angsd -i {} -anc ~/Desktop/msGBS_data/George/KFP-ANGSDRuns/RJ3_05_Kbra--Ancestral.fa -ref ~/Desktop/msGBS_data/George/Genome/GCF_001649575.1_ASM164957v1_genomic.Edited.fasta -sites ~/Desktop/msGBS_data/George/KFP-Analyses/KFP-Heterozygosity/KFP--GoodSamplesReads_NoES1_Kher_SITES--Article--Ultra.pos -GL 1 -doSaf 1 -fold 1 -remove_bads 1 -uniqueOnly 1 -baq 1 -C 50 -minMapQ 30 -minQ 20 -out ~/Desktop/msGBS_data/George/KFP-Analyses/KFP-Heterozygosity/NoES1_Kher/{/...} :::: ~/Desktop/msGBS_data/George/KFP-Mapped/KFP--GoodSamplesReads_NoES1_Kher.BAMlist
+```
+`-anc` = fasta file containting outgroup individual. We selected one file from _K. brasiliensis_.
+
+`-ref` = Rerence genome file.
+
+`-sites` = File containing the sites to include in analysis.
+
+`-GL 1` = Genotype-likelihood using SAMtools models.
+
+`-doSaf 1` = Calculate the Site allele frequency likelihood based on individual genotype likelihoods assuming HWE.
+
+`-fold 1` = Estimate folded SFS.
+
+`-remove_bads 1` = Discard 'bad' reads, (flag>=256).
+
+`-uniqueOnly 1` = Discard reads that doesn't map uniquely.
+
+`-baq 1`= Adjust qscores around indels (1=normal baq 2= extended(as SAMtools)).
+
+`-C 50` = Adjust mapQ for excessive mismatches (as SAMtools).
+
+`-minMapQ 30` = Discard reads with mapping quality below 30.
+
+`-minQ 20` = Discard bases with base quality below 20.
+
+To generate the fractions of heterozygosity file, we used **ANGSD v. 0.92** as follows:
+
+```
+parallel --plus "~/Desktop/msGBS_data/Tools/ngsTools/angsd/misc/realSFS {} > ~/Desktop/msGBS_data/George/KFP-Analyses/KFP-Heterozygosity/NoES1_Kher/{/..}.het" ::: ~/Desktop/msGBS_data/George/KFP-Analyses/KFP-Heterozygosity/NoES1_Kher/*.saf.idx
+```
+
+Finally, to calculate the percentage of heterozygous sites across individuals, we used:
+```
+fgrep '.' *.het | tr ":" " " | awk '{print $1"\t"$3/($2+$3)*100}' | gawk '{print $1"\t"$2"\t"lol[1]}' | sort -k 1,1gr | awk '{split($0,a,"."); print a[1]"\t"$2"\t"$3'} | awk '{split($0,a,"_"); print $1"\t"a[1]"_"a[3]'} > ~/Desktop/msGBS_data/George/KFP-Analyses/KFP-Heterozygosity/NoES1_Kher/KFP--GoodSamplesReads_NoES1_Kher_SITES--Article--Ultra.Heterozygosity.txt
+```
+The file containing the proportion of heterozygous sites can be found [here](KFP--GoodSamplesReads_NoES1_Kher_SITES--Article--Ultra.Heterozygosity.txt).
+
+### 5) Genomic analysis with Dataset II (5.477 SNPs)
+
+#### 5.1)  Estimate individual ancestry
+To estimate the potential number of genetic clusters (K) in the dataset as well as its proportion across individuals in the dataset, we used the software **ngsAdmix**, using the '.beagle' SNPs file generated in **step 3**. As follows:
+```
+export N_REP=100
+
+for K in `seq -w 2 12`
+do
+    echo /groups/hologenomics/fgvieira/scripts/wrapper_ngsAdmix.sh -P 12 -likes ~/data/Temporary/KFP/KFP--GoodSamplesReads_NoES1_Kher--Article--Ultra.beagle.gz -K $K -minMaf 0 -tol 1e-6 -tolLike50 1e-3 -maxiter 10000 -o ~/data/Temporary/KFP/KFP--GoodSamplesReads_NoES1_Kher--Article--Ultra.${K}
+
+done | xsbatch -c 12 --mem-per-cpu 1024 --max-array-jobs 12 -J ngsAdmix -R --time 10-00 --
+```
+`-P 12` = Number of threads equals 12.
+
+`-likes` = Beagle file with genotype likelihoods.
+
+`-K 12` =  Number of ancestral populations to be tested (12 in this case).
+
+ `-minMaf 0` = Minimum minor allele frequency of zero.
+
+ `-tol 1e-6` = Tolerance for convergence of 1e-6.
+
+ `-tolLike50 1e-3` = Loglikelihood difference of 1e-3 in 50 iterations.
+
+ `-maxiter 10000` = Maximum number of 10k EM iterations.
+
+ #### 5.2)  Multidimensional scalling (MDS)
+ To have a multidimensional analysis of variation, we first generated a pairwise distance matrix between all individuals in the dataset using **ngsDist** as follows:
+```
+~/Desktop/msGBS_data/Tools/ngsTools/ngsDist/ngsDist --n_threads 8 --geno ~/Desktop/msGBS_data/George/KFP-ANGSDRuns/KFP--GoodSamplesReads_NoES1_Kher--Article--Ultra.beagle.gz --pairwise_del --seed 55 --probs --n_ind 53 --n_sites 5477 --labels ~/Desktop/msGBS_data/George/KFP-Mapped/KFP--GoodSamplesReads_NoES1_Kher.labels --out ~/Desktop/msGBS_data/George/KFP-Analyses/KFP-MDS/KFP--GoodSamplesReads_NoES1_Kher--Article--Ultra.dist
+ ```
+`--n_threads 8` = Number of threads equals 8.
+
+`--geno` =  Path to genotype likelihood file.
+
+`--pairwise_del` = Pairwise deletion of missing data.
+
+`--seed 55` = Random number generator seed.
+
+`--probs` = Input is composed of genotype likelihoods.
+
+`--n_ind 53` = Number of individuals in the dataset (53).
+
+`--n_sites 5477` = Number of SNPs in the dataset (5477).
+
+To perfom MDS analysis with genetic distance data, we used the following script:
+
+```
+tail -n +3 ~/Desktop/msGBS_data/George/KFP-Analyses/KFP-MDS/KFP--GoodSamplesReads_NoES1_Kher--Article--Ultra.dist | Rscript --vanilla --slave ~/Desktop/msGBS_data/Tools/Scripts/get_PCA.R --no_header --data_symm -n 10 -m "mds" -o ~/Desktop/msGBS_data/George/KFP-Analyses/KFP-MDS/KFP--GoodSamplesReads_NoES1_Kher--Article--Ultra.mds
+```
+
+The R script 'get_PCA.R' is available [here](get_PCA.R). The file with the MDS scores for each individuals is available [here](KFP--GoodSamplesReads_NoES1_Kher--Article--Ultra.mds).
+
+### 6) Calling SNPs for a subset of individuals with no missing data (Dataset  III)
+Given the evidence of hybridisation was limited to two populations in southeast Brazil (GUA and FUN, RJ04 and RJ05 in the BAM files), we created a different  the dataset to include only individuals from those populations for analysis especifically looking at hybridisation. We called SNPs for this particular set of individuals, but this time not allowing for any missing data. As follows:
+```
+~/Desktop/msGBS_data/Tools/ngsTools/angsd/angsd -nThreads 2 -ref ~/Desktop/msGBS_data/George/Genome/GCF_001649575.1_ASM164957v1_genomic.Edited.fasta -bam ~/Desktop/msGBS_data/George/KFP-Mapped/KFP--GoodSamplesReads_OnlyKher_NoES1_Kher-Koce.BAMlist -remove_bads 1 -uniqueOnly 1 -baq 1 -C 50 -minMapQ 30 -minQ 20 -minInd $((39*100/100)) -doCounts 1 -GL 1 -doGlf 2 -doMajorMinor 1 -doMaf 1 -MinMaf 0.03 -SNP_pval 1e-6 -doPost 2 -doGeno 3 -doPlink 2 -geno_minDepth 3 -setMaxDepth $((39*500)) -dumpCounts 2 -postCutoff 0.95 -doHaploCall 1 -doVcf 1 -out ~/Desktop/msGBS_data/George/KFP-ANGSDRuns/KFP--GoodSamplesReads_OnlyKher_NoES1_Kher-Koce_NoMissingData--Article--Ultra
+```
+
+The parameters are the same as used in **step 4** for SNPs calling in Dataset II. The only exepction this time is that on parameter `-minInd` we set to ((39*100/100)), meaning that to consider a SNP, all the 39 individuals in the dataset must have reads within the criteria used in the script for that position. No missing data for any SNP was allowed this time. The total number of SNPs generated in this dataset was __1,633__.
+
+#### 6.1)  Selecting subset of SNPs from Dataset III for NewHybrids.
+
+To classify the individuals across different hybrid classes (e.g. parental species 1, parental species 2, F1, F2, backcross 1 or backcross 2) we used the software **NewHybrids v.1.1**. However, this software only allows the use of 200 SNPs. We have filtered the SNPs from Dataset III to be the most conservative as possible. We first selected the SNPs with the lowest pariwise linkage disequilibrium values. As follows:
