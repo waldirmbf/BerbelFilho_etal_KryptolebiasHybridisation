@@ -443,4 +443,4 @@ grep -f ~/Desktop/msGBS_data/George/KFP-ANGSDRuns/KFP--GoodSamplesReads_OnlyKher
 
 cat ~/Desktop/msGBS_data/George/KFP-ANGSDRuns/KFP--GoodSamplesReads_OnlyKher_NoES1_Kher-Koce_NoMissingData--Article--Ultra_HEAD-True.vcf KFP--GoodSamplesReads_OnlyKher_NoES1_Kher-Koce_NoMissingData--Article--Ultra.LD_SNPsWithLowLD_412_TestFstPerSNP_Fst-1_200BestSNPsBody.txt > ~/Desktop/msGBS_data/George/KFP-ANGSDRuns/KFP--GoodSamplesReads_OnlyKher_NoES1_Kher-Koce_NoMissingData--Article--Ultra.LD_SNPsWithLowLD_412_TestFstPerSNP_Fst-1_200BestSNPs.vcf
 ```
-The final '.vcf' file containing the list of 200 SNPs used in **NeHybrids** can be found [here](KFP--GoodSamplesReads_OnlyKher_NoES1_Kher-Koce_NoMissingData--Article--Ultra.LD_SNPsWithLowLD_412_TestFstPerSNP_Fst-1_200BestSNPs.vcf)
+The final '.vcf' file containing the list of 200 SNPs used in **NewHybrids** can be found [here](KFP--GoodSamplesReads_OnlyKher_NoES1_Kher-Koce_NoMissingData--Article--Ultra.LD_SNPsWithLowLD_412_TestFstPerSNP_Fst-1_200BestSNPs.vcf).
