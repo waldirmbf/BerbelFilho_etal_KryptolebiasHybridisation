@@ -1,10 +1,11 @@
 # **Genetic analysis with SNPs from msGBS library**
 
-Killfish Project Pipeline | Ultra Documentation - by George Pacheco and Waldir M. Berbel-Filho
+Killfish Project Pipeline | Ultra Documentation - by George Pacheco ![](../ORCID-iD.png)[](https://orcid.org/0000-0002-9367-6813)  and Waldir M. Berbel-Filho ![](../ORCID-iD.png)[](https://orcid.org/0000-0001-6991-4685)
+
 
 This documentation outlines the pipelines used for genetic analysis (SNPs genotypes and sites extracted from msGBS library) in Berbel-Filho et al. (XXXX)
 
-Last Modified: 22nd June 2020              
+Last Modified: 02 July 2020              
 
 Please, contact george.pacheco@snm.ku.dk or waldirmbf@gmail.com should any question arise.
 __________________________________________
@@ -348,4 +349,98 @@ The parameters are the same as used in **step 4** for SNPs calling in Dataset II
 
 #### 6.1)  Selecting subset of SNPs from Dataset III for NewHybrids.
 
-To classify the individuals across different hybrid classes (e.g. parental species 1, parental species 2, F1, F2, backcross 1 or backcross 2) we used the software **NewHybrids v.1.1**. However, this software only allows the use of 200 SNPs. We have filtered the SNPs from Dataset III to be the most conservative as possible. We first selected the SNPs with the lowest pariwise linkage disequilibrium values. As follows:
+To classify the individuals across different hybrid classes (e.g. parental species 1, parental species 2, F1, F2, backcross 1 or backcross 2) we used the software **NewHybrids v.1.1**. However, this software only allows the use of 200 SNPs. We have filtered the SNPs from Dataset III to be the most conservative as possible, with the lowest pairwise LD and highest F<sub>ST</sub> values.
+
+##### 6.1.1)  Pairwise LD between SNPs
+We first selected the SNPs with the lowest pariwise linkage disequilibrium values. We used the software **ngsLD**. We first needed to create a '.pos file' as follows:
+```
+zcat ~/Desktop/msGBS_data/George/KFP-ANGSDRuns/KFP--GoodSamplesReads_OnlyKher_NoES1_Kher-Koce_NoMissingData--Article--Ultra.mafs.gz | tail -n +2 | cut -f 1,2,7 > ~/Desktop/msGBS_data/George/KFP-Analyses/KFP-LD/KFP--GoodSamplesReads_OnlyKher_NoES1_Kher-Koce_NoMissingData--Article--Ultra.LD.pos
+```
+The '.pos' file (a file with coordinates for each site) can be find [here](KFP--GoodSamplesReads_OnlyKher_NoES1_Kher-Koce_NoMissingData--Article--Ultra.LD.pos).
+  To test for LD across all pair of SNPs, we used the following command in **ngsLD**:
+```
+~/Desktop/msGBS_data/Tools/ngsTools/ngsLD/ngsLD --n_threads 8 --geno ~/Desktop/msGBS_data/George/KFP-ANGSDRuns/KFP--GoodSamplesReads_OnlyKher_NoES1_Kher-Koce_NoMissingData--Article--Ultra.beagle.gz --probs --n_ind 39 --n_sites 1633 --pos ~/Desktop/msGBS_data/George/KFP-Analyses/KFP-LD/KFP--GoodSamplesReads_OnlyKher_NoES1_Kher-Koce_NoMissingData--Article--Ultra.LD.pos --max_kb_dist 500 --min_maf 0.03 --out ~/Desktop/msGBS_data/George/KFP-Analyses/KFP-LD/KFP--GoodSamplesReads_OnlyKher_NoES1_Kher-Koce_NoMissingData--Article--Ultra.LD.tsv
+```
+`--n_threads 8` = Number of threads used (8).
+
+`--geno` = Path to the beagle SNPs file.
+
+`--probs` = The input file contain gentoype likelihoods.
+
+`--n_ind 39` = Number of individuals (39).
+
+`--n_sites 1633` = Number of SNPs (1633).
+
+`--pos` = Path to '.pos' file.
+
+`--max_kb_dist 500` = Maximum distance between SNPs (in Kb) to calculate LD (500kb).
+
+`--min_maf 0.03` = Minimum SNP minor allele frequency (0.03).
+
+The resulting file with the pairwise LD test can be found [here](KFP--GoodSamplesReads_OnlyKher_NoES1_Kher-Koce_NoMissingData--Article--Ultra.LD.tsv).
+
+##### 6.1.2)  F<sub>ST</sub> between the parental species per SNP
+
+To select the SNPs with higest F<sub>ST</sub> between parental species, we created a dataset without hybrids and  used the following script:
+
+```
+POP=("OnlyKher_NoES1_Kher_NoHybrids" "OnlyKoce_NoHybrids")  
+
+for i1 in `seq 0 $((${#POP[@]}-2))`
+do
+    for i2 in `seq $((i1+1)) $((${#POP[@]}-1))`
+    do
+        pop1="KFP--GoodSamplesReads_${POP[i1]}-DoSaf--Article--Ultra"
+        pop2="KFP--GoodSamplesReads_${POP[i2]}-DoSaf--Article--Ultra"
+        N_SITES=`~/Desktop/msGBS_data/Tools/ngsTools/angsd/misc/realSFS print $pop1.saf.idx $pop2.saf.idx | wc -l`
+        echo -ne "${POP[i1]}\t${POP[i2]}\t$N_SITES\t"
+        if [[ $N_SITES == 0 ]]; then
+            echo "NA"
+        else
+            ~/Desktop/msGBS_data/Tools/ngsTools/angsd/misc/realSFS $pop1.saf.idx $pop2.saf.idx > /tmp/${POP[i1]}.${POP[i2]}.ml
+            ~/Desktop/msGBS_data/Tools/ngsTools/angsd/misc/realSFS fst index $pop1.saf.idx $pop2.saf.idx -sfs /tmp/${POP[i1]}.${POP[i2]}.ml -fstout /tmp/${POP[i1]}.${POP[i2]}
+            ~/Desktop/msGBS_data/Tools/ngsTools/angsd/misc/realSFS fst stats /tmp/${POP[i1]}.${POP[i2]}.fst.idx
+        fi
+    done
+done > ~/Desktop/msGBS_data/George/KFP-ANGSDRuns/KFP-Fst/KFP--Fst.tsv
+```
+
+##### 6.1.3)  Merging F<sub>ST</sub> and LD files into a VCF file
+
+To create a file for the pariwise F<sub>ST</sub> values between parental species, we used the following command:
+```
+~/Desktop/msGBS_data/Tools/ngsTools/angsd/misc/realSFS fst print /tmp/OnlyKher_NoES1_Kher_NoHybrids.OnlyKoce_NoHybrids.fst.idx > ~/Desktop/msGBS_data/George/KFP-ANGSDRuns/TestFstPerSNP.txt
+```
+
+To filter those pair of SNPs with F<sub>ST</sub> value equal 1, we used the following command:
+```
+awk '$4 >= 1 {print}' ~/Desktop/msGBS_data/George/KFP-ANGSDRuns/TestFstPerSNP.txt > ~/Desktop/msGBS_data/George/KFP-ANGSDRuns/TestFstPerSNP_Fst-1.txt
+```
+To select the pair of SNPs with the lowest LD value, we used the following command:
+```
+sort -k 6,6 ~/Desktop/msGBS_data/George/KFP-Analyses/KFP-LD/KFP--GoodSamplesReads_OnlyKher_NoES1_Kher-Koce_NoMissingData--Article--Ultra.LD.tsv | head -n 412 | cut -f 1,3 | perl -p -e 's/:/ /g' | perl -p -e 's/\t/\n/g' | perl -p -e 's/ /\t/g' | uniq -u > ~/Desktop/msGBS_data/George/KFP-Analyses/KFP-LD/KFP--GoodSamplesReads_OnlyKher_NoES1_Kher-Koce_NoMissingData--Article--Ultra.LD_SNPsWithLowLD_412.txt
+```
+
+To intersect the list of SNPs with low LD values with SNPs with F<sub>ST</sub> equals 1, we used the following command:
+```
+grep -f ~/Desktop/msGBS_data/George/KFP-Analyses/KFP-LD/KFP--GoodSamplesReads_OnlyKher_NoES1_Kher-Koce_NoMissingData--Article--Ultra.LD_SNPsWithLowLD_412.txt ~/Desktop/msGBS_data/George/KFP-ANGSDRuns/TestFstPerSNP_Fst-1.txt > ~/Desktop/msGBS_data/George/KFP-Analyses/KFP-LD/KFP--GoodSamplesReads_OnlyKher_NoES1_Kher-Koce_NoMissingData--Article--Ultra.LD_SNPsWithLowLD_412_TestFstPerSNP_Fst-1.txt
+```
+**NewHybrids** requires a '.vcf' file as input file for SNPs analysis. To create the '.vcf' file using the list of SNPs with low LD and high F<sub>ST</sub> values, we used the folowing commands:
+```
+# Unzip original VCF:
+
+gzip -d ~/Desktop/msGBS_data/George/KFP-ANGSDRuns/KFP--GoodSamplesReads_OnlyKher_NoES1_Kher-Koce_NoMissingData--Article--Ultra.vcf.gz | less -S > ~/Desktop/msGBS_data/George/KFP-ANGSDRuns/KFP--GoodSamplesReads_OnlyKher_NoES1_Kher-Koce_NoMissingData--Article--Ultra_HEAD.vcf
+
+# Create a VCF head:
+
+head -n 13 ~/Desktop/msGBS_data/George/KFP-ANGSDRuns/KFP--GoodSamplesReads_OnlyKher_NoES1_Kher-Koce_NoMissingData--Article--Ultra_HEAD.vcf > ~/Desktop/msGBS_data/George/KFP-ANGSDRuns/KFP--GoodSamplesReads_OnlyKher_NoES1_Kher-Koce_NoMissingData--Article--Ultra_HEAD-True.vcf
+
+# Create body of VCF:
+
+grep -f ~/Desktop/msGBS_data/George/KFP-ANGSDRuns/KFP--GoodSamplesReads_OnlyKher_NoES1_Kher-Koce_NoMissingData--Article--Ultra.LD_SNPsWithLowLD_412_TestFstPerSNP_Fst-1.txt ~/Desktop/msGBS_data/George/KFP-ANGSDRuns/KFP--GoodSamplesReads_OnlyKher_NoES1_Kher-Koce_NoMissingData--Article--Ultra_HEAD.vcf > KFP--GoodSamplesReads_OnlyKher_NoES1_Kher-Koce_NoMissingData--Article--Ultra.LD_SNPsWithLowLD_412_TestFstPerSNP_Fst-1_200BestSNPsBody.txt
+
+# Create final VCF:
+
+cat ~/Desktop/msGBS_data/George/KFP-ANGSDRuns/KFP--GoodSamplesReads_OnlyKher_NoES1_Kher-Koce_NoMissingData--Article--Ultra_HEAD-True.vcf KFP--GoodSamplesReads_OnlyKher_NoES1_Kher-Koce_NoMissingData--Article--Ultra.LD_SNPsWithLowLD_412_TestFstPerSNP_Fst-1_200BestSNPsBody.txt > ~/Desktop/msGBS_data/George/KFP-ANGSDRuns/KFP--GoodSamplesReads_OnlyKher_NoES1_Kher-Koce_NoMissingData--Article--Ultra.LD_SNPsWithLowLD_412_TestFstPerSNP_Fst-1_200BestSNPs.vcf
+```
+The final '.vcf' file containing the list of 200 SNPs used in **NeHybrids** can be found [here](KFP--GoodSamplesReads_OnlyKher_NoES1_Kher-Koce_NoMissingData--Article--Ultra.LD_SNPsWithLowLD_412_TestFstPerSNP_Fst-1_200BestSNPs.vcf)

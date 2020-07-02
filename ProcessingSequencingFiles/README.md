@@ -1,6 +1,6 @@
 # **Processing sequencing files**
 
-Killfish Project Pipeline | Ultra Documentation - by George Pacheco and Waldir M. Berbel-Filho
+Killfish Project Pipeline | Ultra Documentation - by George Pacheco ![](ORCID-iD.png)[](https://orcid.org/0000-0002-9367-6813)  and Waldir M. Berbel-Filho ![](ORCID-iD.png)[](https://orcid.org/0000-0001-6991-4685)
 
 This documentation outlines the pipelines used for processing sequencing files used in both genetic and epigenetic analysis  in Berbel-Filho et al. (XXXX)
 
