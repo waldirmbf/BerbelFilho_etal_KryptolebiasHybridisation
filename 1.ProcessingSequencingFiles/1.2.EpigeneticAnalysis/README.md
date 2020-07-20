@@ -162,64 +162,12 @@ We manually edited this file, including the first two columns (EntrezID and posi
 
 For the coverage of all sites covered in the library:
 ```
-samtools depth -a -f listBAM.txt > rawCounts_Allsites.csv*
+samtools depth -a -f listBAM.txt > rawCounts_Allsites.csv
 ```
 `-a` = Output all positions (including those with zero depth).
 
-* Output file was too big to be deposited in GitHub. Analaysis on this file follow the same pipelines as described below but were only run locally.
-
-
-#IN R (mostly followed the instructions contained here: https://bioinformatics-core-shared-training.github.io/RNAseq-R/)
-
->library(edgeR)
-#Input sample info file
-> sampleinfo<-read.delim('SampleInfo.txt')
-#Input counts data
-seqdata<-read.delim('diffMeth_rawCounts_16_07.txt',stringsAsFactors=FALSE)
-#create file with only counts (remove EntrezID and Lenght columns)
-countdata<- seqdata[,-(1:2)]
-#obtain cpms(counts per million 1 in at least 7 samples)
-myCPM<-cpm(countdata)
-#filter out cpm values >0.5
-> thresh<-myCPM > 0.5
-keep <- rowSums(thresh) >=2
-counts.keep <- countdata[keep,]
-#convert counts data in a DGELIst object
-dgeObj  <- DGEList(counts.keep)
-dgeObj$samples #to show library size and normalisaiton factors (i have not normalsied it yet so all of them equals 1)
-#create barplot of library sizes
-> barplot(dgeObj$samples$lib.size, names=colnames(dgeObj), las=2)
-#get log2 counts per million
->logcounts <- cpm (dgeObj, log=TRUE)
-write.table(logcounts, 'logcounts.txt')
-#boxxplot to check overall distirbution of log2 counts files
-> pdf('log2counts.pdf')
->boxplot(logcounts, xlab="", ylab="Log2 counts per million", las=2) + abline(h=median(logcounts),col="blue")
->dev.off()
-#MDS plot from raw counts
->par(mfrow=c(1,2))
->levels(sampleinfo$Species)
-> col.cell  <- c("purple", "red", "green") [sampleinfo$Species]
-> data.frame(sampleinfo$CellType,col.cell)
-> data.frame(sampleinfo$CellType,col.cell)
-> pdf('MDS_rawcounts.pdf')
-> plotMDS(dgeObj,col=col.cell)
-dev.off()
-#get normalised counts
-> normalised.counts<-calcNormFactors(dgeObj,method="TMM")
-> tmm<- cpm(normalised.counts)
-#get MDS plot from normalsied counts
-> pdf('MDS_normalised_counts.pdf')
-> plotMDS(tmm,col=col.cell)
-> dev.off()
-#calculate normalisation factors for each library
->  dgeObj <- calcNormFactors(dgeObj)
-> dgeObj$samples
-#save normalisation factors
+Output file was too big to be deposited in GitHub. Analysis on this file follow the same pipelines as described below but were locally.
 
 
 
-#getnormalisedcounts
-
-
-norm<-cpm(dgeObj, normalized.lib.sizes=FALSE)
+>
