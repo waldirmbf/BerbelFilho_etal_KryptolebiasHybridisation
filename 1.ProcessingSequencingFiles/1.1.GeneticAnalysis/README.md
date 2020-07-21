@@ -3,7 +3,7 @@
 Killfish Project Pipeline | Ultra Documentation - by George Pacheco [![Foo](../ORCID-iD.png)](https://orcid.org/0000-0002-9367-6813)  and Waldir M. Berbel-Filho [![Foo](../ORCID-iD.png)](https://orcid.org/0000-0001-6991-4685)
 
 
-This documentation outlines the pipelines used for genetic analysis (SNPs genotypes and sites extracted from msGBS library) in Berbel-Filho et al. (XXXX)
+This documentation outlines the pipelines used for genetic analysis (SNPs genotypes and sites extracted from msGBS library) in the preprint manuscript [Berbel-Filho et al. (2020)](https://www.biorxiv.org/content/10.1101/2020.07.01.182022v1.full).
 
 Last Modified: 02 July 2020              
 
@@ -444,3 +444,8 @@ grep -f ~/Desktop/msGBS_data/George/KFP-ANGSDRuns/KFP--GoodSamplesReads_OnlyKher
 cat ~/Desktop/msGBS_data/George/KFP-ANGSDRuns/KFP--GoodSamplesReads_OnlyKher_NoES1_Kher-Koce_NoMissingData--Article--Ultra_HEAD-True.vcf KFP--GoodSamplesReads_OnlyKher_NoES1_Kher-Koce_NoMissingData--Article--Ultra.LD_SNPsWithLowLD_412_TestFstPerSNP_Fst-1_200BestSNPsBody.txt > ~/Desktop/msGBS_data/George/KFP-ANGSDRuns/KFP--GoodSamplesReads_OnlyKher_NoES1_Kher-Koce_NoMissingData--Article--Ultra.LD_SNPsWithLowLD_412_TestFstPerSNP_Fst-1_200BestSNPs.vcf
 ```
 The final '.vcf' file containing the list of 200 SNPs used in **NewHybrids** can be found [here](KFP--GoodSamplesReads_OnlyKher_NoES1_Kher-Koce_NoMissingData--Article--Ultra.LD_SNPsWithLowLD_412_TestFstPerSNP_Fst-1_200BestSNPs.vcf).
+
+
+### Citation
+
+Berbel-Filho, Waldir M., et al. "Additive and non-additive epigenetic signatures of hybridisation between fish species with different mating systems." bioRxiv (2020). https://doi.org/10.1101/2020.07.01.182022
