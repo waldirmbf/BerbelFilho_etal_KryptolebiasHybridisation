@@ -4,7 +4,7 @@ Killfish Project Pipeline |  by  Waldir M. Berbel-Filho [![Foo](../ORCID-iD.png)
 
 This documentation outlines the pipelines used for epigenetic analysis in the preprint manuscript [Berbel-Filho et al. (2020)](https://www.biorxiv.org/content/10.1101/2020.07.01.182022v1.full).
 
-Last Modified: 17 July 2020
+Last Modified: 21 July 2020
 
 Please, contact waldirmbf@gmail.com should any question arise.
 __________________________________________
