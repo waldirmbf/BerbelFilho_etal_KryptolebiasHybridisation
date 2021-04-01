@@ -79,7 +79,7 @@ To plot the number of cut sites vs number of reads per sample, we used the follo
 ##### 1.9) Differential methylation analysis
 The dataset is now ready for the differential methylation analysis between groups. We first compared samples of _K. ocellatus_ vs. _K. hermaphroditus_ as follows:
 ```
-#Total DMCs
+# Total DMCs
 > KoceVSKher <- diffMeth(se = se, cateogory = "Group",
                 condition1 = "Koce", condition2 = "Kher",
                 cpmThreshold = 1, thresholdSamples = 11)
