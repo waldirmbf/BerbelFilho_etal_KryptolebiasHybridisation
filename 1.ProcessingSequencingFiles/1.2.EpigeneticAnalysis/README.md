@@ -27,10 +27,10 @@ __________________________________________
 
 To set the group (either one of the parental species or hybrids), we used the following command:
 ```
-> colData(se) <- DataFrame(Group = c(rep("Hyb", 7), rep("Kher", 21), rep("Koce", 11)),
+> colData(se) <- DataFrame(Group = c(rep("Hyb", 5), rep("Kher", 21), rep("Koce", 11)),
 > row.names = colnames(assay(se)))
 ```
- The seven BAM files with the prefix "Hyb" represented the hybrid individuals identified using the genetic analysis.
+ The five BAM files with the prefix "Hyb" represented the hybrid F1 individuals identified using the genetic analysis.
 
  The 21 BAM files with the prefix "Kher" represented pure _K. hermaphroditus_ individuals identified using the genetic analysis.
 
@@ -89,35 +89,35 @@ The dataset is now ready for the differential methylation analysis between group
 ## Total number of DMCs = 56,705 between Koce and Kher.
 
 #Filter DMCs with FDR < 0.05
-> KoceVSKher_filtered <- GRanges(KoceVSKher$site[which(top$FDR < 0.05)])
+> KoceVSKher_filtered <- GRanges(KoceVSKher$site[which(KoceVSKher$FDR < 0.01)])
 > summary(KoceVSKher_filtered)
 > KoceVSKher_filtered
 
 #Write file
 write.csv(KoceVSKher_filtered,"diffMeth_KocevsKher_filtered.csv")
 
-## Total number of DMCs with  FDR < 0.05 = 38,473 between Koce and Kher.
+## Total number of DMCs with  FDR < 0.01 = 38,473 between Koce and Kher.
 ```
 
-Similarly, we then compared samples of _K. ocellatus_ vs. hybrids as follows:
+Similarly, we then compared samples of _K. ocellatus_ vs.  F1 hybrids as follows:
 ```
 #Total DMCs
 > KoceVSHyb <- diffMeth(se = se, cateogory = "Group",
                 condition1 = "Koce", condition2 = "Hyb",
-                cpmThreshold = 1, thresholdSamples = 7)
+                cpmThreshold = 1, thresholdSamples = 5)
 #Write file         
 > write.csv(KoceVSHyb,"diffMeth_KocevsHyb_total.csv")
 
-## Total number of DMCs = 50,143 between Koce and Hyb.
+## Total number of DMCs = 54,296 between Koce and Hyb.
 
 #Filter DMCs with FDR < 0.05
-> KoceVSHyb_filtered <- GRanges(KoceVSHyb$site[which(top$FDR < 0.05)])
+> KoceVSHyb_filtered <- GRanges(KoceVSHyb$site[which(top$FDR < 0.01)])
 > summary(KoceVSHyb_filtered)
 > KoceVSHyb_filtered
 #Write file
 write.csv(KoceVSHyb_filtered,"diffMeth_KocevsHyb_filtered.csv")
 
-## Total number of DMCs with < 0.05 = 10,620 between Koce and Kher.
+## Total number of DMCs with < 0.01 = 12,006 between Koce and Kher.
 
 ```
 Finally, we compared samples of _K. hermaphroditus_ vs. hybrids as follows:
@@ -127,18 +127,18 @@ Finally, we compared samples of _K. hermaphroditus_ vs. hybrids as follows:
                 condition1 = "Kher", condition2 = "Hyb",
                 cpmThreshold = 1, thresholdSamples = 7)
 #Write file         
-> write.csv(KherVSHyb,"diffMeth_KocevsKher_total.csv")
+> write.csv(KherVSHyb,"diffMeth_KhervsHyb_total.csv")
 
-## Total number of DMCs = 56,390 between Koce and Hyb.
+## Total number of DMCs = 60,212 between Koce and Hyb.
 
 #Filter DMCs with FDR < 0.05
-> KherVSHyb_filtered <- GRanges(KherVSHyb$site[which(top$FDR < 0.05)])
+> KherVSHyb_filtered <- GRanges(KherVSHyb$site[which(KherVSHyb$FDR < 0.01)])
 > summary(KherVSHyb_filtered)
 > KherVSHyb_filtered
 #Write file
 > write.csv(KherVSHyb_filtered,"diffMeth_KhervsHyb_filtered.csv")
 
-## Total number of DMCs with < 0.05 = 13,905 between Koce and Kher.
+## Total number of DMCs with < 0.01 = 12,221 between Kher and Hyb.
 ```
 
 All output '.csv' files containing both total and filtered DMCs are attached in this repository.
