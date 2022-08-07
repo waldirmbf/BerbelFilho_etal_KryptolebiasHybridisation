@@ -3,7 +3,7 @@
 Killfish Project Pipeline | Ultra Documentation - by George Pacheco [![Foo](../ORCID-iD.png)](https://orcid.org/0000-0002-9367-6813)  and Waldir M. Berbel-Filho [![Foo](../ORCID-iD.png)](https://orcid.org/0000-0001-6991-4685)
 
 
-This documentation outlines the pipelines used for genetic analysis (SNPs genotypes and sites extracted from msGBS library) in the preprint manuscript [Berbel-Filho et al. (2020)](https://www.biorxiv.org/content/10.1101/2020.07.01.182022v1.full).
+This documentation outlines the pipelines used for genetic analysis (SNPs genotypes and sites extracted from msGBS library) in [Berbel-Filho et al. (2021)](https://www.mdpi.com/2073-4425/12/10/1486).
 
 Last Modified: 02 July 2020              
 
