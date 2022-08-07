@@ -11,4 +11,10 @@ From left to right, a male of _K. ocellatus_, followed by hermaphrodites of _K. 
 
 ### Citation
 
+Hybrids genomics:
+
+Berbel-Filho, Waldir M., et al. ["Against the Odds: Hybrid Zones between Mangrove Killifish Species with Different Mating Systems."](https://www.mdpi.com/2073-4425/12/10/1486). Genes 12.10 (2021): 1486.
+
+Inherithance of epigenetic patterns:
+
 Berbel-Filho, Waldir M., et al. "Additive and non-additive epigenetic signatures of hybridisation between fish species with different mating systems." bioRxiv (2020). https://doi.org/10.1101/2020.07.01.182022
